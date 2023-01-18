@@ -73,6 +73,6 @@ app.get('/edit/:id',function(req, res){
 //수정 값
 app.post('/edit/:id', function(req, res) { 
     db.collection('post').updateOne({_id : parseInt(req.params.id)}, {$set : {제목 : req.body.title, 날짜 : req.body.date}}, function(err, result) {
-        res.redirect('/list')
+        res.redirect('/list');
     })
 })
