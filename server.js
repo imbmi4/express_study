@@ -4,15 +4,17 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended : true}));
 app.set('view engine', 'ejs');
 
+require("dotenv").config();
+
 var db;
 
 const MongoClient = require('mongodb').MongoClient;
-MongoClient.connect('mongodb+srv://guntak:asdrt20@cluster0.iclbkyd.mongodb.net/test', function(err, client){
+MongoClient.connect(process.env.DB_URL, function(err, client){
     if(err){return console.log(err)}
 
     db = client.db('todoapp');
 
-    app.listen(8080, function (){
+    app.listen(process.env.PORT, function (){
         console.log('listening on 8080')
     });
 })
@@ -101,7 +103,6 @@ passport.use(new LocalStrategy({
     session: true,
     passReqToCallback: false,
   }, function (입력한아이디, 입력한비번, done) {
-    console.log(입력한아이디, 입력한비번);
     db.collection('users').findOne({ id: 입력한아이디 }, function (에러, 결과) {
       if (에러) return done(에러)
   
@@ -113,3 +114,33 @@ passport.use(new LocalStrategy({
       }
     })
   }));
+
+// 로그인 할 때 ㅇㅇ
+passport.serializeUser(function(user, done){
+  done(null, user.id)
+})
+
+// 마이페이지 할 때 ㅇㅇ
+passport.deserializeUser(function(id, done){
+    db.collection('users').findOne({id : id},function(err, result){
+        if(err){console.log(err)}
+        done(null, result)
+    })
+});
+
+app.get('/mypage',isLogin, function(req, res){
+    res.render('mypage.ejs', {user_data : req.user})
+});
+
+function isLogin(req, res, next){
+    if(req.user){
+        next();
+    }
+    else{
+        res.send('No login')
+    }
+}
+
+app.get('/fail',function(req, res){
+    res.send("Login fail")
+});

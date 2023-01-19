@@ -46,21 +46,11 @@
           </form>
         </div>
       </nav>  
-  <h4 class="container mt-4"><strong>로그인</strong></h4>
+  <h4 class="container mt-4"><strong>MyPage</strong></h4>
+  <p>아이디 : <%= user_data.id%></p>
+  <p>비밀번호 : <%= user_data.password%></p>
 
-  <div class="container mt-3">
-    <form action="/login" method="POST">
-      <div class="form-group">
-        <label>ID</label>
-        <input type="text" class="form-control" name="id">
-      </div>
-      <div class="form-group">
-        <label>password</label>
-        <input type="text" class="form-control" name="pw">
-      </div>
-      <button type="submit" class="btn btn-outline-secondary">Submit</button>
-    </form>
-  </div>
+  
 
 
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
